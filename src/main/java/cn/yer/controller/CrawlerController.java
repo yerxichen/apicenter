@@ -90,4 +90,14 @@ public class CrawlerController {
         return "success";
     }
 
+    @ApiOperation(value = "保存网络图片到本地", notes = "保存网络图片到本地")
+    @RequestMapping(value = "/saveLocalImageAll", method = RequestMethod.PUT)
+    @ResponseBody
+    public String saveLocalImageAll() {
+        String[] str = { "pc_cpu", "pc_dy", "pc_gtyp", "pc_jx", "pc_nc", "pc_sr", "pc_xk", "pc_xsp", "pc_yp", "pc_zb" };
+        for (int i = 0; i < str.length; i++) {
+            crawlerService.getImage(str[i]);
+        }
+        return "success";
+    }
 }

@@ -5,6 +5,8 @@ import cn.yer.dao.*;
 import cn.yer.entity.*;
 import cn.yer.pconline.Crawler;
 import cn.yer.pconline.InsetInfo;
+import cn.yer.pconline.SaveImage;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
@@ -611,4 +613,91 @@ public class CrawlerService {
 
     }
 
+
+    public void getImage(String path) {
+        int xxzjbh = 0;
+        String title = "";
+        String pic = "";
+        JSONArray arr = JSONArray.parseArray(JSON.toJSONString(query_util(path)));
+        logger.info("changdu >>>"+arr.size());
+        for (int i = 0; i < arr.size(); i++) {
+            JSONObject rsObj = (JSONObject) arr.get(i);
+            xxzjbh = Integer.parseInt(rsObj.getString("xxzjbh"));
+            title = rsObj.getString("title");
+            // System.out.println(title);
+            title = title.replaceAll("/", "_");
+            title = title.replaceAll("\\*", "x");
+            title = title.replaceAll(" ", "_");
+            // System.out.println(title);
+            pic = rsObj.getString("pic");
+            SaveImage si = new SaveImage();
+            si.saveImageToDisk(xxzjbh, title, pic, path);
+            String localPic = "D:\\\\pc_image\\\\" + path + "\\\\" + title + "_" + xxzjbh + ".jpg";
+            // System.out.println(localPic);
+            save_util(xxzjbh, localPic, path);
+            System.out.println("完成" + i + "次");
+
+        }
+        System.out.println("程序结束！");
+    }
+
+    public Object query_util(String path) {
+
+       // String sql = "SELECT xxzjbh,title,pic FROM " + path;
+        switch (path) {
+            case "pc_cpu":
+                return cpuDao.findAll();
+
+            case "pc_dy":
+                return dyDao.findAll();
+
+            case "pc_gtyp":
+                return gtypDao.findAll();
+
+            case "pc_jx":
+                return jxDao.findAll();
+
+            case "pc_nc":
+                return ncDao.findAll();
+
+            case "pc_sr":
+                return cpuDao.findAll();
+
+            case "pc_xk":
+                return xkDao.findAll();
+
+            case "pc_xsq":
+                return xsqDao.findAll();
+
+            case "pc_yp":
+                return ypDao.findAll();
+
+            case "pc_zb":
+                return zbDao.findAll();
+
+            default:
+                return "error";
+
+
+        }
+
+
+    }
+
+    /**
+     *
+     */
+    public void save_util(int xxzjbh, String localPic, String tableName) {
+
+       // String sql = "UPDATE " + tableName + " SET localPic='" + localPic + "' WHERE xxzjbh=" + xxzjbh;
+        switch (tableName){
+            case "pc_cpu":
+                Pc_cpu cpu=new Pc_cpu();
+                cpu.setXxzjbh(xxzjbh);
+                cpu.setLocalPic(localPic);
+                cpuDao.save(cpu);
+                break;
+        }
+
+    }
 }
