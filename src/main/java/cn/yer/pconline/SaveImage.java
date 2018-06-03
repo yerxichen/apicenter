@@ -35,7 +35,7 @@ public class SaveImage {
 		byte[] data = new byte[1024];
 		int len = 0;
 
-		String strPath = "D:\\pc_image\\" + path + "\\";
+		String strPath = "D:\\servermedia\\pc_image\\" + path + "\\";
 		File file = new File(strPath);
 		if (!file.exists()) {
 			file.mkdirs();
@@ -43,13 +43,12 @@ public class SaveImage {
 
 		FileOutputStream fileOutputStream = null;
 		try {
-			fileOutputStream = new FileOutputStream("D:\\pc_image\\" + path + "\\" + title + "_" + xxzjbh + ".jpg");
+			fileOutputStream = new FileOutputStream(strPath + title + "_" + xxzjbh + ".jpg");
 			while ((len = inputStream.read(data)) != -1) {
 				fileOutputStream.write(data, 0, len);
 
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 
@@ -57,7 +56,6 @@ public class SaveImage {
 				try {
 					inputStream.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -65,7 +63,6 @@ public class SaveImage {
 				try {
 					fileOutputStream.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -101,10 +98,8 @@ public class SaveImage {
 			}
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

@@ -6,6 +6,7 @@ import cn.yer.entity.*;
 import cn.yer.pconline.Crawler;
 import cn.yer.pconline.InsetInfo;
 import cn.yer.pconline.SaveImage;
+import cn.yer.utils.Constant;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -112,16 +113,16 @@ public class CrawlerService {
     }
 
     public void deleteAll() {
-        cpuDao.deleteAll();
-        dyDao.deleteAll();
-        gtypDao.deleteAll();
-        jxDao.deleteAll();
-        ncDao.deleteAll();
-        srDao.deleteAll();
-        xkDao.deleteAll();
-        xsqDao.deleteAll();
-        ypDao.deleteAll();
-        zbDao.deleteAll();
+        cpuDao.deleteAllData();
+        dyDao.deleteAllData();
+        gtypDao.deleteAllData();
+        jxDao.deleteAllData();
+        ncDao.deleteAllData();
+        srDao.deleteAllData();
+        xkDao.deleteAllData();
+        xsqDao.deleteAllData();
+        ypDao.deleteAllData();
+        zbDao.deleteAllData();
     }
 
     public void insert_cpu(JSONObject jsonObject) {
@@ -619,7 +620,7 @@ public class CrawlerService {
         String title = "";
         String pic = "";
         JSONArray arr = JSONArray.parseArray(JSON.toJSONString(query_util(path)));
-        logger.info("changdu >>>"+arr.size());
+        logger.info("changdu >>>" + arr.size());
         for (int i = 0; i < arr.size(); i++) {
             JSONObject rsObj = (JSONObject) arr.get(i);
             xxzjbh = Integer.parseInt(rsObj.getString("xxzjbh"));
@@ -632,7 +633,7 @@ public class CrawlerService {
             pic = rsObj.getString("pic");
             SaveImage si = new SaveImage();
             si.saveImageToDisk(xxzjbh, title, pic, path);
-            String localPic = "D:\\\\pc_image\\\\" + path + "\\\\" + title + "_" + xxzjbh + ".jpg";
+            String localPic = Constant.PIC_URL + "/" + title + "_" + xxzjbh + ".jpg";
             // System.out.println(localPic);
             save_util(xxzjbh, localPic, path);
             System.out.println("完成" + i + "次");
@@ -643,7 +644,7 @@ public class CrawlerService {
 
     public Object query_util(String path) {
 
-       // String sql = "SELECT xxzjbh,title,pic FROM " + path;
+        // String sql = "SELECT xxzjbh,title,pic FROM " + path;
         switch (path) {
             case "pc_cpu":
                 return cpuDao.findAll();
@@ -689,15 +690,44 @@ public class CrawlerService {
      */
     public void save_util(int xxzjbh, String localPic, String tableName) {
 
-       // String sql = "UPDATE " + tableName + " SET localPic='" + localPic + "' WHERE xxzjbh=" + xxzjbh;
-        switch (tableName){
+        // String sql = "UPDATE " + tableName + " SET localPic='" + localPic + "' WHERE xxzjbh=" + xxzjbh;
+        switch (tableName) {
             case "pc_cpu":
-                Pc_cpu cpu=new Pc_cpu();
-                cpu.setXxzjbh(xxzjbh);
-                cpu.setLocalPic(localPic);
-                cpuDao.save(cpu);
+                cpuDao.updateLocalPicById(localPic, xxzjbh);
                 break;
+            case "pc_dy":
+                dyDao.updateLocalPicById(localPic, xxzjbh);
+                break;
+            case "pc_gtyp":
+                gtypDao.updateLocalPicById(localPic, xxzjbh);
+                break;
+            case "pc_jx":
+                jxDao.updateLocalPicById(localPic, xxzjbh);
+                break;
+            case "pc_nc":
+                ncDao.updateLocalPicById(localPic, xxzjbh);
+                break;
+            case "pc_sr":
+                srDao.updateLocalPicById(localPic, xxzjbh);
+                break;
+            case "pc_xk":
+                xkDao.updateLocalPicById(localPic, xxzjbh);
+                break;
+            case "pc_xsq":
+                xsqDao.updateLocalPicById(localPic, xxzjbh);
+                break;
+            case "pc_yp":
+                ypDao.updateLocalPicById(localPic, xxzjbh);
+                break;
+            case "pc_zb":
+                zbDao.updateLocalPicById(localPic, xxzjbh);
+                break;
+
         }
 
+    }
+
+    public JSONObject getTotalPage(){
+        return new Crawler().getTotalPage();
     }
 }

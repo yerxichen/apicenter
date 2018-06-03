@@ -1,6 +1,7 @@
 package cn.yer.controller;
 
 import cn.yer.service.CrawlerService;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -99,5 +100,13 @@ public class CrawlerController {
             crawlerService.getImage(str[i]);
         }
         return "success";
+    }
+
+    @ApiOperation(value = "获取总页数", notes = "获取总页数")
+    @RequestMapping(value = "/getTotalPage", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject getTotalPage() {
+
+        return crawlerService.getTotalPage();
     }
 }
